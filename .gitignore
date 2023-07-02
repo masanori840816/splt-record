@@ -50,3 +50,4 @@ node_modules
 templates/js/*
 
 appSettings.json
+record_images/*
