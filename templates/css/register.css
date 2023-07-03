@@ -1,0 +1,27 @@
+html{
+    margin: 0;
+    padding: 0;
+}
+body{
+    margin: 0;
+    padding: 0;
+}
+.record_info_area {
+    height: 80vh;
+    width: 90vw;
+}
+.register_row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    width: 96%;
+}
+.register_signle_row {
+    height: 10%;
+    background-color: aqua;
+}
+.register_quadruple_row {
+    height: 60%;
+    background-color: blue;
+}

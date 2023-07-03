@@ -3,15 +3,16 @@
     <head>
         <title>登録</title>
         <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="./css/register.css" />
     </head>
     <body>
         <h1>登録</h1>
         <div class="record_info_area">
-            <div class="register_signle_row">
+            <div class="register_signle_row register_row">
                 <div class="register_record_cell">
                     <div>対戦日時</div>
                     <div>
-                        <input type="datetime-local" id="register_record_date">
+                        <input type="datetime-local" id="register_record_date" placeholder="yyyy/mm/dd HH:mm">
                     </div>
                 </div>
                 <div class="register_record_cell">
@@ -24,11 +25,11 @@
                 <div class="register_record_cell">
                     <div>勝敗</div>
                     <div>
-                        <select id="register_record_result_input">
+                        <select id="register_record_result_input"></select>
                     </div>
                 </div>
             </div>
-            <div class="register_quadruple_row">
+            <div class="register_quadruple_row register_row">
                 <div class="register_players_area">
                     <div>
                         <input type="text" id="register_player_ally_1">
@@ -57,11 +58,14 @@
                         <input type="text" id="register_player_enemy_4">
                     </div>
                 </div>
+                <div class="register_record_image_area">
+
+                </div>
             </div>
-            <div class="register_signle_row">
+            <div class="register_signle_row register_row">
                 <input type="file" id="register_record_image" accept=".png,.jpg,.jpeg">
             </div>
-            <div class="register_signle_row">
+            <div class="register_signle_row register_row">
                 <div><button onclick="RegisterPage.save()">保存</button></div>
             </div>
         </div>
