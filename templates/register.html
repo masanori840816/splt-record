@@ -20,7 +20,7 @@
                     <div>
                         <datalist id="register_record_stage_list">
                         </datalist>
-                        <input type="text" id="register_record_stage">
+                        <input type="text" id="register_record_stage" list="register_record_stage_list">
                     </div>
                 </div>
                 
@@ -70,8 +70,10 @@
                 <input type="file" id="register_record_image" accept=".png,.jpg,.jpeg">
             </div>
             <div class="register_signle_row register_row">
-                <div><button onclick="RegisterPage.save()">保存</button></div>
+                <div><button onclick="RegisterPage.save('{{.}}')">保存</button></div>
             </div>
         </div>
+        <script src="/js/register.page.js"></script>
+        <script>RegisterPage.init('{{.}}');</script>
     </body>
 </html>

@@ -4,7 +4,7 @@
   "description": "とある対戦ゲームの武器編成を記録するためのサンプル",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build.register": "node ./esbuilds/register.build.mjs"
   },
   "author": "Masui Masanori",
   "license": "MIT",
