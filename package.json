@@ -1,0 +1,15 @@
+{
+  "name": "splt-record",
+  "version": "1.0.0",
+  "description": "とある対戦ゲームの武器編成を記録するためのサンプル",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Masui Masanori",
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "^0.18.11",
+    "typescript": "^5.1.6"
+  }
+}
