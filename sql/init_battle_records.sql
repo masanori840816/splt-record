@@ -1,6 +1,7 @@
 CREATE TABLE battle_records
 (id serial PRIMARY KEY,
 battle_result_id bigint not null REFERENCES battle_results(id),
+battle_stage_id bigint not null REFERENCES battle_stages(id),
 battle_date timestamp with time zone not null,
 file_name varchar(256) not null
 );
