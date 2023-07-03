@@ -51,3 +51,4 @@ templates/js/*
 
 appSettings.json
 record_images/*
+sql_with_values

@@ -25,6 +25,19 @@ func main() {
 	}
 	http.Handle("/js/", http.FileServer(http.Dir("templates")))
 	http.Handle("/css/", http.FileServer(http.Dir("templates")))
+	http.HandleFunc("/records", func(w http.ResponseWriter, r *http.Request) {
+		switch r.Method {
+		case "GET":
+			log.Println("Get")
+		case "POST":
+			log.Println("POST")
+		case "PUT":
+			log.Println("PUT")
+		case "DELETE":
+			log.Println("DELETE")
+		}
+		w.Write([]byte("Hello"))
+	})
 	http.Handle("/", &templateHandler{settings: &settings})
 	log.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%d", settings.Host, settings.Port), nil))
 }
