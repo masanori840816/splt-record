@@ -18,6 +18,8 @@
                 <div class="register_record_cell">
                     <div>ステージ</div>
                     <div>
+                        <datalist id="register_record_stage_list">
+                        </datalist>
                         <input type="text" id="register_record_stage">
                     </div>
                 </div>
@@ -31,31 +33,33 @@
             </div>
             <div class="register_quadruple_row register_row">
                 <div class="register_players_area">
+                    <datalist id="register_record_weapons_list">
+                    </datalist>
                     <div>
-                        <input type="text" id="register_player_ally_1">
+                        <input type="text" id="register_player_ally_1" placeholder="自分" list="register_record_weapons_list">
                     </div>
                     <div>
-                        <input type="text" id="register_player_ally_2">
+                        <input type="text" id="register_player_ally_2" placeholder="味方1" list="register_record_weapons_list">
                     </div>
                     <div>
-                        <input type="text" id="register_player_ally_3">
+                        <input type="text" id="register_player_ally_3" placeholder="味方2" list="register_record_weapons_list">
                     </div>
                     <div>
-                        <input type="text" id="register_player_ally_4">
+                        <input type="text" id="register_player_ally_4" placeholder="味方3" list="register_record_weapons_list">
                     </div>
                 </div>
                 <div class="register_players_area">
                     <div>
-                        <input type="text" id="register_player_enemy_1">
+                        <input type="text" id="register_player_opponent_1" placeholder="対戦相手1" list="register_record_weapons_list">
                     </div>
                     <div>
-                        <input type="text" id="register_player_enemy_2">
+                        <input type="text" id="register_player_opponent_2" placeholder="対戦相手2" list="register_record_weapons_list">
                     </div>
                     <div>
-                        <input type="text" id="register_player_enemy_3">
+                        <input type="text" id="register_player_opponent_3" placeholder="対戦相手3" list="register_record_weapons_list">
                     </div>
                     <div>
-                        <input type="text" id="register_player_enemy_4">
+                        <input type="text" id="register_player_opponent_4" placeholder="対戦相手4" list="register_record_weapons_list">
                     </div>
                 </div>
                 <div class="register_record_image_area">
