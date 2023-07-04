@@ -31,15 +31,7 @@ export class RegisterView {
 
         console.log(this.recodeDate);
         console.log(this.stageInput);
-        console.log(this.resultInput);
-        console.log(this.playerAlly1);
-        console.log(this.playerAlly2);
-        console.log(this.playerAlly3);
-        console.log(this.playerAlly4);
-        console.log(this.playerOpponent1);        
-        console.log(this.playerOpponent2);
-        console.log(this.playerOpponent3);        
-        console.log(this.playerOpponent4);
+        
     }
     public setStageList(values: models.BattleStage[]) {
         for(const v of values) {
@@ -54,5 +46,74 @@ export class RegisterView {
             o.value = v.name;
             this.weaponList.appendChild(o);
         }
+    }
+    public setResultList(values: models.BattleResult[]) {
+        for(const v of values) {
+            const o = document.createElement("option");
+            o.value = v.id.toString();
+            o.textContent = v.name;
+            this.resultInput.appendChild(o);
+        }
+    }
+    public generateRecord(values: models.Weapon[]): models.BattleRecordForUpdate {
+        return {
+            id: -1,
+            battleDate: new Date(),
+            battleStageId: -1,
+            battleResultId: parseInt(this.resultInput.options[this.resultInput.selectedIndex]!.value),
+            players: this.generateRecordPlayers(values),
+        };
+    }
+    private generateRecordPlayers(values: models.Weapon[]): models.BattleRecordPlayerForUpdate[] {
+        return [
+            {
+                id: -1,
+                weaponId: this.getWeaponId(this.playerAlly1.value.trim(), values),
+                aliedPlayer: true,
+            },
+            {
+                id: -1,
+                weaponId: this.getWeaponId(this.playerAlly2.value.trim(), values),
+                aliedPlayer: true,
+            },
+            {
+                id: -1,
+                weaponId: this.getWeaponId(this.playerAlly3.value.trim(), values),
+                aliedPlayer: true,
+            },
+            {
+                id: -1,
+                weaponId: this.getWeaponId(this.playerAlly4.value.trim(), values),
+                aliedPlayer: true,
+            },
+            {
+                id: -1,
+                weaponId: this.getWeaponId(this.playerOpponent1.value.trim(), values),
+                aliedPlayer: false,
+            },
+            {
+                id: -1,
+                weaponId: this.getWeaponId(this.playerOpponent2.value.trim(), values),
+                aliedPlayer: false,
+            },
+            {
+                id: -1,
+                weaponId: this.getWeaponId(this.playerOpponent3.value.trim(), values),
+                aliedPlayer: false,
+            },
+            {
+                id: -1,
+                weaponId: this.getWeaponId(this.playerOpponent4.value.trim(), values),
+                aliedPlayer: false,
+            },
+        ];
+    }
+    private getWeaponId(name: string, values: models.Weapon[]): number {
+        for(const v of values) {
+            if(v.name === name) {
+                return v.id;
+            }
+        }
+        return -1;
     }
 }

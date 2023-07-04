@@ -1,39 +1,25 @@
 import * as models from "./spltRecord.type";
+import * as web from "./registrations/registers";
 import { RegisterView } from "./registrations/register.view";
 
 let view: RegisterView;
+let stages: models.BattleStage[];
+let weapons: models.Weapon[];
 window.RegisterPage = {    
-    init(baseUrl: string) {
+    async init(baseUrl: string) {
         view = new RegisterView();
-        const sampleStages: models.BattleStage[] = [
-            {
-                id: 1,
-                name: "サンプル１"
-            },
-            {
-                id: 2,
-                name: "サンプル2"
-            },
-        ];
-        const sampleWeapons: models.Weapon[] = [
-            {
-                id: 1,
-                name: "武器１",
-            },
-            {
-                id: 2,
-                name: "武器２",
-            }
-        ];
-
-        console.log(baseUrl);
-        view.setStageList(sampleStages);
-        view.setWeaponList(sampleWeapons);
-        
+        stages = await web.getAllStages(baseUrl);
+        weapons = await web.getAllWeapons(baseUrl);
+        view.setStageList(stages);
+        view.setWeaponList(weapons);
+        view.setResultList(await web.getAllResults(baseUrl));
     },
     save(baseUrl: string){
 
         console.log(baseUrl);
+        const newRec = view.generateRecord(weapons);
+        console.log(newRec);
+        
     },
 }
 
