@@ -36,3 +36,13 @@ func (b Battles) GetAllStages(ctx *context.Context) ([]models.BattleStage, error
 	}
 	return results, nil
 }
+func (b Battles) GetAllRules(ctx *context.Context) ([]models.BattleRule, error) {
+	results := make([]models.BattleRule, 0)
+	err := b.db.NewSelect().
+		Model(&results).
+		Scan(*ctx)
+	if err != nil {
+		return nil, err
+	}
+	return results, nil
+}

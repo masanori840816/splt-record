@@ -52,6 +52,9 @@ func main() {
 	http.HandleFunc("/battle-stages/all", func(w http.ResponseWriter, r *http.Request) {
 		GetAllStages(w, dbCtx)
 	})
+	http.HandleFunc("/battle-rules/all", func(w http.ResponseWriter, r *http.Request) {
+		GetAllRules(w, dbCtx)
+	})
 	http.Handle("/", &templateHandler{settings: &settings})
 	log.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%d", settings.Host, settings.Port), nil))
 }
