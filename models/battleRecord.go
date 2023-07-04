@@ -4,6 +4,8 @@ import (
 	"time"
 
 	"github.com/uptrace/bun"
+
+	dto "github.com/splt-record/dto"
 )
 
 type BattleRecord struct {
@@ -15,4 +17,13 @@ type BattleRecord struct {
 	FileName       string        `bun:"file_name,notnull,type:varchar(256)" json:"fileName"`
 	BattleResult   *BattleResult `bun:"rel:has-one,join:battle_result_id=id" json:"battleResult"`
 	BattleStage    *BattleStage  `bun:"rel:has-one,join:battle_stage_id=id" json:"battleStage"`
+}
+
+func NewBattleRecord(record dto.BattleRecordForUpdate, fileName string) BattleRecord {
+	return BattleRecord{
+		BattleResultID: record.BattleResultID,
+		BattleStageID:  record.BattleStageID,
+		BattleDate:     record.BattleDate,
+		FileName:       fileName,
+	}
 }

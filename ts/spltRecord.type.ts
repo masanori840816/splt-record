@@ -24,3 +24,11 @@ export type BattleRecordPlayerForUpdate = {
 	weaponId: number,
 	aliedPlayer: boolean,
 }
+export type UploadFile = {
+	name: string,
+	fileData: Blob
+}
+export type ActionResult = {
+	succeeded: boolean,
+	errorMessage: string
+}

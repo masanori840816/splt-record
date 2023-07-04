@@ -15,6 +15,8 @@ export class RegisterView {
     private playerOpponent2: HTMLInputElement;
     private playerOpponent3: HTMLInputElement;
     private playerOpponent4: HTMLInputElement;
+    private fileInput: HTMLInputElement;
+    private loadedFile: models.UploadFile|null = null;
     constructor() {
         this.recordDate = document.getElementById("register_record_date") as HTMLInputElement;
         this.stageList = document.getElementById("register_record_stage_list") as HTMLDataListElement;
@@ -28,7 +30,27 @@ export class RegisterView {
         this.playerOpponent1 = document.getElementById("register_player_opponent_1") as HTMLInputElement;
         this.playerOpponent2 = document.getElementById("register_player_opponent_2") as HTMLInputElement;
         this.playerOpponent3 = document.getElementById("register_player_opponent_3") as HTMLInputElement;
-        this.playerOpponent4 = document.getElementById("register_player_opponent_4") as HTMLInputElement;        
+        this.playerOpponent4 = document.getElementById("register_player_opponent_4") as HTMLInputElement;
+        this.fileInput = document.getElementById("register_record_image") as HTMLInputElement;
+        this.fileInput.onchange = async _ => {
+            this.loadedFile = null;        
+            const fileList = this.fileInput.files;
+            if(fileList == null) {
+                return;
+            }
+            const file = fileList[0];
+            if(file == null) {
+                return;
+            }
+            const buf = await file.arrayBuffer();
+            const blob = new Blob([new Uint8Array(buf)]);
+            this.loadedFile = {
+                name: file.name,
+                fileData: blob
+            };
+            const img = document.getElementById("register_record_image_view") as HTMLImageElement;
+            img.src = URL.createObjectURL(blob);
+        };
     }
     public setStageList(values: models.BattleStage[]) {
         for(const v of values) {
@@ -63,6 +85,9 @@ export class RegisterView {
             battleResultId: parseInt(this.resultInput.options[this.resultInput.selectedIndex]!.value),
             players: this.generateRecordPlayers(weapons),
         };
+    }
+    public getFile(): models.UploadFile|null {
+        return this.loadedFile;
     }
     private generateRecordPlayers(values: models.Weapon[]): models.BattleRecordPlayerForUpdate[] {
         return [

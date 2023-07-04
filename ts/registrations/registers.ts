@@ -38,3 +38,13 @@ export async function getAllResults(baseUrl: string): Promise<models.BattleResul
         return [];
     }
 }
+export async function createRecord(baseUrl: string, record: models.BattleRecordForUpdate, file: models.UploadFile): Promise<models.ActionResult> {
+    console.log(`${baseUrl} ${file}`);
+    console.log(record);
+    
+    
+    return {
+        succeeded: false,
+        errorMessage: "not implemented"
+    };
+}
