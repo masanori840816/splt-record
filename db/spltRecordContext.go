@@ -9,8 +9,9 @@ import (
 )
 
 type SpltRecordContext struct {
-	db     *bun.DB
-	Weapon *Weapons
+	db      *bun.DB
+	Weapon  *Weapons
+	Battles *Battles
 }
 
 func NewSpltRecordContext(connectionString string) *SpltRecordContext {
@@ -20,5 +21,6 @@ func NewSpltRecordContext(connectionString string) *SpltRecordContext {
 		pgdialect.New(),
 	)
 	result.Weapon = NewWeapons(result.db)
+	result.Battles = NewBattles(result.db)
 	return &result
 }

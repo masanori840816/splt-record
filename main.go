@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"html/template"
 	"log"
@@ -45,13 +44,13 @@ func main() {
 		w.Write([]byte("Hello"))
 	})
 	http.HandleFunc("/weapons/all", func(w http.ResponseWriter, r *http.Request) {
-		res, err := GetAllWeapons(dbCtx)
-		if err != nil {
-			log.Println(err.Error())
-			w.WriteHeader(502)
-		}
-		resJSON, _ := json.Marshal(res)
-		w.Write(resJSON)
+		GetAllWeapons(w, dbCtx)
+	})
+	http.HandleFunc("/battle-results/all", func(w http.ResponseWriter, r *http.Request) {
+		GetAllBattleResult(w, dbCtx)
+	})
+	http.HandleFunc("/battle-stages/all", func(w http.ResponseWriter, r *http.Request) {
+		GetAllStages(w, dbCtx)
 	})
 	http.Handle("/", &templateHandler{settings: &settings})
 	log.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%d", settings.Host, settings.Port), nil))
