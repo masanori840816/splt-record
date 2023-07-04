@@ -6,8 +6,11 @@ export type Weapon = {
     id: number,
     name: string,
 }
-
 export type BattleResult = {
+	id: number,
+    name: string,
+}
+export type BattleRule = {
 	id: number,
     name: string,
 }
@@ -15,6 +18,7 @@ export type BattleRecordForUpdate = {
 	id: number,
 	battleResultId: number,
 	battleStageId: number,
+	battleRuleId: number,
 	battleDate: Date,
     players: BattleRecordPlayerForUpdate[]
 }

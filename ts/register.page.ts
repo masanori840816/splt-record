@@ -13,6 +13,7 @@ window.RegisterPage = {
         weapons = await web.getAllWeapons(baseUrl);
         view.setStageList(stages);
         view.setWeaponList(weapons);
+        view.setRuleList(await web.getAllRules(baseUrl));
         view.setResultList(await web.getAllResults(baseUrl));
     },
     async save(baseUrl: string){
@@ -29,8 +30,7 @@ window.RegisterPage = {
     },
 }
 function validateRecord(record: models.BattleRecordForUpdate, file: models.UploadFile|null): boolean {
-    if(record.battleResultId <= 0 ||
-        record.battleStageId <= 0 ||
+    if(record.battleStageId <= 0 ||
         record.battleDate.getFullYear() < 2023 ||
         record.players.length < 8) {
         return false;
