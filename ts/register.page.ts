@@ -17,7 +17,7 @@ window.RegisterPage = {
     save(baseUrl: string){
 
         console.log(baseUrl);
-        const newRec = view.generateRecord(weapons);
+        const newRec = view.generateRecord(stages, weapons);
         console.log(newRec);
         
     },

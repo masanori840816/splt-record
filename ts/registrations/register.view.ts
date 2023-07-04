@@ -1,7 +1,8 @@
+import { hasAnyTexts } from "ts/texts/hasAnyTexts";
 import * as models from "../spltRecord.type";
 
 export class RegisterView {
-    private recodeDate: HTMLInputElement;
+    private recordDate: HTMLInputElement;
     private stageList: HTMLDataListElement;
     private stageInput: HTMLInputElement;
     private resultInput: HTMLSelectElement;
@@ -15,7 +16,7 @@ export class RegisterView {
     private playerOpponent3: HTMLInputElement;
     private playerOpponent4: HTMLInputElement;
     constructor() {
-        this.recodeDate = document.getElementById("register_record_date") as HTMLInputElement;
+        this.recordDate = document.getElementById("register_record_date") as HTMLInputElement;
         this.stageList = document.getElementById("register_record_stage_list") as HTMLDataListElement;
         this.stageInput = document.getElementById("register_record_stage") as HTMLInputElement;
         this.resultInput = document.getElementById("register_record_result_input") as HTMLSelectElement;
@@ -27,11 +28,7 @@ export class RegisterView {
         this.playerOpponent1 = document.getElementById("register_player_opponent_1") as HTMLInputElement;
         this.playerOpponent2 = document.getElementById("register_player_opponent_2") as HTMLInputElement;
         this.playerOpponent3 = document.getElementById("register_player_opponent_3") as HTMLInputElement;
-        this.playerOpponent4 = document.getElementById("register_player_opponent_4") as HTMLInputElement;
-
-        console.log(this.recodeDate);
-        console.log(this.stageInput);
-        
+        this.playerOpponent4 = document.getElementById("register_player_opponent_4") as HTMLInputElement;        
     }
     public setStageList(values: models.BattleStage[]) {
         for(const v of values) {
@@ -46,6 +43,9 @@ export class RegisterView {
             o.value = v.name;
             this.weaponList.appendChild(o);
         }
+        // 自分に対してはデフォルト値設定
+        const defaultValue = values.find(v => v.id === 3);
+        this.playerAlly1.value = defaultValue?.name ?? "";
     }
     public setResultList(values: models.BattleResult[]) {
         for(const v of values) {
@@ -55,13 +55,13 @@ export class RegisterView {
             this.resultInput.appendChild(o);
         }
     }
-    public generateRecord(values: models.Weapon[]): models.BattleRecordForUpdate {
+    public generateRecord(stages: models.BattleStage[], weapons: models.Weapon[]): models.BattleRecordForUpdate {
         return {
             id: -1,
-            battleDate: new Date(),
-            battleStageId: -1,
+            battleDate: this.getBattleDate(),
+            battleStageId: this.getStageId(stages),
             battleResultId: parseInt(this.resultInput.options[this.resultInput.selectedIndex]!.value),
-            players: this.generateRecordPlayers(values),
+            players: this.generateRecordPlayers(weapons),
         };
     }
     private generateRecordPlayers(values: models.Weapon[]): models.BattleRecordPlayerForUpdate[] {
@@ -115,5 +115,25 @@ export class RegisterView {
             }
         }
         return -1;
+    }
+    private getStageId(stages: models.BattleStage[]): number {
+        const inputStageName = this.stageInput.value;
+        if(hasAnyTexts(inputStageName) == false) {
+            return -1;
+        }
+        for(const s of stages) {
+            if(s.name === inputStageName) {
+                return s.id;
+            }
+        }
+        return -1;
+    }
+    private getBattleDate(): Date {
+        const dateText = this.recordDate.value;
+        // invalid date
+        if(hasAnyTexts(dateText) == false) {
+            return new Date("1999-01-01");
+        }
+        return new Date(dateText);
     }
 }
