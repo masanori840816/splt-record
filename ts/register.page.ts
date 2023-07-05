@@ -21,8 +21,11 @@ window.RegisterPage = {
         const file = view.getFile();
         if(validateRecord(record, file)) {
             const result = await web.createRecord(baseUrl, record, file!);
-            console.log(result);
-            
+            if(result.succeeded) {
+                alert("登録完了");
+            } else {
+                alert(result.errorMessage);
+            }
         } else {
             alert("入力エラー");
         }
