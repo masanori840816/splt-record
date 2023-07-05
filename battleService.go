@@ -20,13 +20,20 @@ func CreateRecord(w http.ResponseWriter, r *http.Request, dbCtx *db.SpltRecordCo
 		w.WriteHeader(400)
 		return
 	}
-	log.Println(record)
+	ctx := context.Background()
+	validateResult := dbCtx.Battles.ValidateForUpdate(&ctx, record)
+	if !validateResult.Succeeded {
+		resJSON, _ := json.Marshal(validateResult)
+		w.Write(resJSON)
+		return
+	}
 	err = files.SaveFile("record_images", fileName, fileData)
 	if err != nil {
 		log.Println(err.Error())
 		w.WriteHeader(400)
 		return
 	}
+
 	result := dto.GetFailedResult("not implemented")
 	resJSON, _ := json.Marshal(result)
 	w.Write(resJSON)
