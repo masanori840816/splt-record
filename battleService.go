@@ -33,8 +33,7 @@ func CreateRecord(w http.ResponseWriter, r *http.Request, dbCtx *db.SpltRecordCo
 		w.WriteHeader(400)
 		return
 	}
-
-	result := dto.GetFailedResult("not implemented")
+	result := dbCtx.Battles.Create(&ctx, record, fileName)
 	resJSON, _ := json.Marshal(result)
 	w.Write(resJSON)
 }

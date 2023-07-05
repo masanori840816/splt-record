@@ -2,7 +2,6 @@ package files
 
 import (
 	"errors"
-	"log"
 	"os"
 	"path"
 )
@@ -18,11 +17,10 @@ func SaveFile(saveDir string, fileName string, fileData []byte) error {
 		return err
 	}
 	defer file.Close()
-	saveLen, err := file.Write(fileData)
+	_, err = file.Write(fileData)
 	if err != nil {
 		return err
 	}
-	log.Println(saveLen)
 	return nil
 }
 func createDirectory(path string) error {

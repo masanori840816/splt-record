@@ -2,6 +2,8 @@ package models
 
 import (
 	"github.com/uptrace/bun"
+
+	dto "github.com/splt-record/dto"
 )
 
 type BattleRecordPlayer struct {
@@ -13,4 +15,12 @@ type BattleRecordPlayer struct {
 
 	BattleRecord *BattleRecord `bun:"rel:has-one,join:battle_record_id=id" json:"battleRecord"`
 	Weapon       *Weapon       `bun:"rel:has-one,join:weapon_id=id" json:"weapon"`
+}
+
+func NewBattleRecordPlayer(player dto.BattleRecordPlayerForUpdate, recordID int64) *BattleRecordPlayer {
+	return &BattleRecordPlayer{
+		BattleRecordID: recordID,
+		WeaponID:       player.WeaponID,
+		AliedPlayer:    player.AliedPlayer,
+	}
 }

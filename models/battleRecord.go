@@ -21,8 +21,8 @@ type BattleRecord struct {
 	BattleRule     *BattleRule   `bun:"rel:has-one,join:battle_rule_id=id" json:"battleRule"`
 }
 
-func NewBattleRecord(record dto.BattleRecordForUpdate, fileName string) BattleRecord {
-	return BattleRecord{
+func NewBattleRecord(record dto.BattleRecordForUpdate, fileName string) *BattleRecord {
+	return &BattleRecord{
 		BattleResultID: record.BattleResultID,
 		BattleStageID:  record.BattleStageID,
 		BattleRuleID:   record.BattleRuleID,

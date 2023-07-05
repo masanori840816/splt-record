@@ -2,6 +2,7 @@ package db
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"log"
 	"strings"
@@ -19,6 +20,32 @@ func NewBattles(database *bun.DB) *Battles {
 	return &Battles{
 		db: database,
 	}
+}
+func (b Battles) Create(ctx *context.Context, record dto.BattleRecordForUpdate, fileName string) dto.ActionResult {
+	tx, err := b.db.BeginTx(*ctx, &sql.TxOptions{})
+	if err != nil {
+		log.Println(err.Error())
+		return dto.GetFailedResult("CREATE RECORD ERROR")
+	}
+	newRecord := models.NewBattleRecord(record, fileName)
+	_, err = tx.NewInsert().Model(newRecord).Exec(*ctx)
+	if err != nil {
+		log.Println(err.Error())
+		tx.Rollback()
+		return dto.GetFailedResult("CREATE RECORD ERROR")
+	}
+	for _, p := range record.Players {
+		newPlayer := models.NewBattleRecordPlayer(p, newRecord.ID)
+		_, err = tx.NewInsert().Model(newPlayer).Exec(*ctx)
+		if err != nil {
+			log.Println(err.Error())
+			tx.Rollback()
+			return dto.GetFailedResult("CREATE RECORD ERROR")
+		}
+	}
+
+	tx.Commit()
+	return dto.GetSucceededResult()
 }
 func (b Battles) GetAllResults(ctx *context.Context) ([]models.BattleResult, error) {
 	results := make([]models.BattleResult, 0)
@@ -107,22 +134,24 @@ func (b Battles) ValidateForUpdate(ctx *context.Context, record dto.BattleRecord
 	playerIDs = strings.TrimPrefix(playerIDs, ",")
 	weaponIDs = strings.TrimPrefix(weaponIDs, ",")
 	// Extract IDs that do not exist in the database
-	invalidPlayerIDs := make([]int, 0)
-	err = b.db.NewRaw(
-		fmt.Sprintf(`SELECT t1.keyword FROM (SELECT UNNEST(ARRAY[%s]) as keyword) as t1
-		LEFT JOIN battle_record_players t2 ON t1.keyword =t2.ID	WHERE t2.ID is null
-        `, playerIDs)).Scan(*ctx, &invalidPlayerIDs)
-	if err != nil {
-		log.Println(err.Error())
-		return dto.GetFailedResult("FAILED VALIDATION")
-	}
-	if len(invalidPlayerIDs) > 0 {
-		invalidIDText := ""
-		for _, id := range invalidPlayerIDs {
-			invalidIDText = fmt.Sprintf("%s, %d", invalidIDText, id)
+	if len(playerIDs) > 0 {
+		invalidPlayerIDs := make([]int, 0)
+		err = b.db.NewRaw(
+			fmt.Sprintf(`SELECT t1.keyword FROM (SELECT UNNEST(ARRAY[%s]) as keyword) as t1
+			LEFT JOIN battle_record_players t2 ON t1.keyword =t2.ID	WHERE t2.ID is null
+			`, playerIDs)).Scan(*ctx, &invalidPlayerIDs)
+		if err != nil {
+			log.Println(err.Error())
+			return dto.GetFailedResult("FAILED VALIDATION")
 		}
+		if len(invalidPlayerIDs) > 0 {
+			invalidIDText := ""
+			for _, id := range invalidPlayerIDs {
+				invalidIDText = fmt.Sprintf("%s, %d", invalidIDText, id)
+			}
 
-		return dto.GetFailedResult(fmt.Sprintf("INVALID PLAYER IDS%s", invalidIDText))
+			return dto.GetFailedResult(fmt.Sprintf("INVALID PLAYER IDS%s", invalidIDText))
+		}
 	}
 	invalidWeaponIDs := make([]int, 0)
 	err = b.db.NewRaw(
