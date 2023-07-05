@@ -51,12 +51,22 @@ export async function getAllRules(baseUrl: string): Promise<models.BattleRule[]>
     }
 }
 export async function createRecord(baseUrl: string, record: models.BattleRecordForUpdate, file: models.UploadFile): Promise<models.ActionResult> {
-    console.log(`${baseUrl} ${file}`);
-    console.log(record);
-    
-    
+    try{
+        const formData = new FormData();
+        formData.append("recordimage", file.fileData);
+        formData.append("filename", file.name);
+        formData.append("record", JSON.stringify(record));
+        const response = await fetch(`${baseUrl}records`,{
+            method: "POST",
+            body: formData
+        });
+        const jsn = await response.json();
+        return JSON.parse(JSON.stringify(jsn));
+    }catch(err) {
+        console.error(err);   
+    }
     return {
         succeeded: false,
-        errorMessage: "not implemented"
+        errorMessage: "failed"
     };
 }

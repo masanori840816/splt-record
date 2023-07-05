@@ -34,14 +34,16 @@ func main() {
 		switch r.Method {
 		case "GET":
 			log.Println("Get")
+			w.Write([]byte("Hello"))
 		case "POST":
-			log.Println("POST")
+			CreateRecord(w, r, dbCtx)
 		case "PUT":
 			log.Println("PUT")
+			w.Write([]byte("Hello"))
 		case "DELETE":
 			log.Println("DELETE")
+			w.Write([]byte("Hello"))
 		}
-		w.Write([]byte("Hello"))
 	})
 	http.HandleFunc("/weapons/all", func(w http.ResponseWriter, r *http.Request) {
 		GetAllWeapons(w, dbCtx)
