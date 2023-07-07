@@ -6,19 +6,28 @@ import (
 	"log"
 	"net/http"
 	"path/filepath"
-	"sync"
 
 	db "github.com/splt-record/db"
 )
 
 type templateHandler struct {
-	once     sync.Once
 	templ    *template.Template
 	settings *AppSettings
 }
 
 func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	handleMainPageRequest(w, r, t)
+	log.Println(r.RequestURI)
+	switch r.RequestURI {
+	case "/search":
+		t.templ = template.Must(template.ParseFiles(filepath.Join("templates", "search.html")))
+	case "/":
+	case "/register":
+		t.templ = template.Must(template.ParseFiles(filepath.Join("templates", "register.html")))
+	default:
+		w.WriteHeader(404)
+		return
+	}
+	t.templ.Execute(w, t.settings.BaseURL)
 }
 func main() {
 	settings, err := NewAppSettings()
@@ -59,10 +68,4 @@ func main() {
 	})
 	http.Handle("/", &templateHandler{settings: &settings})
 	log.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%d", settings.Host, settings.Port), nil))
-}
-func handleMainPageRequest(w http.ResponseWriter, r *http.Request, t *templateHandler) {
-	t.once.Do(func() {
-		t.templ = template.Must(template.ParseFiles(filepath.Join("templates", "register.html")))
-	})
-	t.templ.Execute(w, t.settings.BaseURL)
 }
