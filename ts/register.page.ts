@@ -4,20 +4,18 @@ import { RegisterView } from "./registrations/register.view";
 import { hasAnyTexts } from "./texts/hasAnyTexts";
 
 let view: RegisterView;
-let stages: models.BattleStage[];
 let weapons: models.Weapon[];
 window.RegisterPage = {    
     async init(baseUrl: string) {
         view = new RegisterView();
-        stages = await web.getAllStages(baseUrl);
         weapons = await web.getAllWeapons(baseUrl);
-        view.setStageList(stages);
+        view.setStageList(await web.getAllStages(baseUrl));
         view.setWeaponList(weapons);
         view.setRuleList(await web.getAllRules(baseUrl));
         view.setResultList(await web.getAllResults(baseUrl));
     },
     async save(baseUrl: string){
-        const record = view.generateRecord(stages, weapons);
+        const record = view.generateRecord(weapons);
         const file = view.getFile();
         if(validateRecord(record, file)) {
             const result = await web.createRecord(baseUrl, record, file!);

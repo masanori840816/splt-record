@@ -3,8 +3,7 @@ import * as models from "../spltRecord.type";
 
 export class RegisterView {
     private recordDate: HTMLInputElement;
-    private stageList: HTMLDataListElement;
-    private stageInput: HTMLInputElement;
+    private stageInput: HTMLSelectElement;
     private ruleInput: HTMLSelectElement;
     private resultInput: HTMLSelectElement;
     private weaponList: HTMLDataListElement;
@@ -20,8 +19,7 @@ export class RegisterView {
     private loadedFile: models.UploadFile|null = null;
     constructor() {
         this.recordDate = document.getElementById("register_record_date") as HTMLInputElement;
-        this.stageList = document.getElementById("register_record_stage_list") as HTMLDataListElement;
-        this.stageInput = document.getElementById("register_record_stage") as HTMLInputElement;
+        this.stageInput = document.getElementById("register_record_stage_input") as HTMLSelectElement;
         this.ruleInput = document.getElementById("register_record_rule_input") as HTMLSelectElement;
         this.resultInput = document.getElementById("register_record_result_input") as HTMLSelectElement;
         this.weaponList = document.getElementById("register_record_weapons_list") as HTMLDataListElement;
@@ -57,8 +55,9 @@ export class RegisterView {
     public setStageList(values: models.BattleStage[]) {
         for(const v of values) {
             const o = document.createElement("option");
-            o.value = v.name;
-            this.stageList.appendChild(o);
+            o.value = v.id.toString();
+            o.textContent = v.name;
+            this.stageInput.appendChild(o);
         }
     }
     public setWeaponList(values: models.Weapon[]) {
@@ -87,11 +86,11 @@ export class RegisterView {
             this.resultInput.appendChild(o);
         }
     }
-    public generateRecord(stages: models.BattleStage[], weapons: models.Weapon[]): models.BattleRecordForUpdate {
+    public generateRecord(weapons: models.Weapon[]): models.BattleRecordForUpdate {
         return {
             id: -1,
             battleDate: this.getBattleDate(),
-            battleStageId: this.getStageId(stages),
+            battleStageId: parseInt(this.stageInput.options[this.stageInput.selectedIndex]!.value),
             battleRuleId: parseInt(this.ruleInput.options[this.ruleInput.selectedIndex]!.value),
             battleResultId: parseInt(this.resultInput.options[this.resultInput.selectedIndex]!.value),
             players: this.generateRecordPlayers(weapons),
@@ -148,18 +147,6 @@ export class RegisterView {
         for(const v of values) {
             if(v.name === name) {
                 return v.id;
-            }
-        }
-        return -1;
-    }
-    private getStageId(stages: models.BattleStage[]): number {
-        const inputStageName = this.stageInput.value;
-        if(hasAnyTexts(inputStageName) == false) {
-            return -1;
-        }
-        for(const s of stages) {
-            if(s.name === inputStageName) {
-                return s.id;
             }
         }
         return -1;

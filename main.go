@@ -21,6 +21,7 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	case "/search":
 		t.templ = template.Must(template.ParseFiles(filepath.Join("templates", "search.html")))
 	case "/":
+		t.templ = template.Must(template.ParseFiles(filepath.Join("templates", "register.html")))
 	case "/register":
 		t.templ = template.Must(template.ParseFiles(filepath.Join("templates", "register.html")))
 	default:
