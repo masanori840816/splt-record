@@ -21,6 +21,7 @@ window.RegisterPage = {
             const result = await web.createRecord(baseUrl, record, file!);
             if(result.succeeded) {
                 alert("登録完了");
+                view.clear();
             } else {
                 alert(result.errorMessage);
             }

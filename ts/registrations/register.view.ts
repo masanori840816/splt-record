@@ -99,6 +99,17 @@ export class RegisterView {
     public getFile(): models.UploadFile|null {
         return this.loadedFile;
     }
+    public clear() {
+        this.playerAlly2.value = "";
+        this.playerAlly3.value = "";
+        this.playerAlly4.value = "";
+        this.playerOpponent1.value = "";
+        this.playerOpponent2.value = "";
+        this.playerOpponent3.value = "";
+        this.playerOpponent4.value = "";
+        const img = document.getElementById("register_record_image_view") as HTMLImageElement;
+        img.src = "";
+    }
     private generateRecordPlayers(values: models.Weapon[]): models.BattleRecordPlayerForUpdate[] {
         return [
             {
